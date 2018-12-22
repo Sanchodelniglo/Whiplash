@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+  <meta name="generator" content=
+  "HTML Tidy for HTML5 for Linux version 5.4.0">
+  <meta charset='UTF-8'>
+  <title>JS Drum Kit</title>
+  <link href='style.css' rel='stylesheet'>
+</head>
+<body>
+  <div class='keys'>
+    <div class='key' data-key='73'>
+      <kbd>I</kbd> <span class='sound'>hihat</span><br>
+    </div>
+    <div class='key' data-key='66'>
+      <kbd>B</kbd> <span class='sound'>kick</span><br>
+    </div>
+    <div class='key' data-key='85'>
+      <kbd>U</kbd> <span class='sound'>clap</span><br>
+    </div>
+    <div class='key' data-key='79'>
+      <kbd>O</kbd> <span class='sound'>openhat</span><br>
+    </div>
+    <div class='key' data-key='90'>
+      <kbd>Z</kbd> <span class='sound'>boom</span><br>
+    </div>
+    <div class='key' data-key='89'>
+      <kbd>Y</kbd> <span class='sound'>ride</span><br>
+    </div>
+    <div class='key' data-key='65'>
+      <kbd>A</kbd> <span class='sound'>snare</span><br>
+    </div>
+    <div class='key' data-key='69'>
+      <kbd>E</kbd> <span class='sound'>tom</span><br>
+    </div>
+    <div class='key' data-key='82'>
+      <kbd>R</kbd> <span class='sound'>tink</span><br>
+    </div>
+  </div><audio data-key='73' src='sounds/hihat.wav'></audio>
+  <audio data-key='66' src='sounds/kick.wav'></audio>
+  <audio data-key='85' src='sounds/clap.wav'></audio>
+  <audio data-key='79' src='sounds/openhat.wav'></audio>
+  <audio data-key='90' src='sounds/boom.wav'></audio>
+  <audio data-key='89' src='sounds/ride.wav'></audio>
+  <audio data-key='65' src='sounds/snare.wav'></audio>
+  <audio data-key='69' src='sounds/tom.wav'></audio>
+  <audio data-key='82' src='sounds/tink.wav'></audio> 
+  <script>
+
+  window.addEventListener('keydown', function(event) {
+    playAudio(event.keyCode)
+  });
+
+  function playAudio(code){
+    const audio = document.querySelector(`audio[data-key="${code}"]`);
+    const key = document.querySelector(`.key[data-key="${code}"]`);
+    if(!audio) return; //stop the function from running all together
+    audio.currentTime = 0 //rewind to the start
+    audio.play();
+    key.classList.add('playing');
+  }
+
+  document.querySelectorAll('.key').forEach( e =>
+    e.addEventListener('click', () =>
+      playAudio(e.dataset.key)
+    )
+  )
+
+  function removeTransition(event) {
+    if(event.propertyName !== 'transform') return; // skip it if it's not a transform
+    this.classList.remove('playing');
+  }
+
+  const keys = document.querySelectorAll('.key');
+  keys.forEach(key => key.addEventListener('transitionend', removeTransition));
+  </script>
+</body>
+</html>

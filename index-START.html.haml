@@ -1,0 +1,44 @@
+!!!
+%html{:lang => "en"}
+  %head
+    %meta{:charset => "UTF-8"}/
+    %title JS Drum Kit
+    %link{:href => "style.css", :rel => "stylesheet"}
+  %body
+    .keys
+      - keys_n_sounds = { I: "hihat", B: "kick", U: "clap", O: "openhat", Z: "boom", Y: "ride", A: "snare", E: "tom", R: "tink" }
+      - keys_n_sounds.each do |key, sound|
+        .key{ data: { key: key.to_s.ord } }
+          %kbd= key
+          %span.sound= sound
+          %br
+
+    - keys_n_sounds.each do |key, sound|
+      %audio{ src:"sounds/#{sound}.wav", data: {key: key.to_s.ord}}
+    :javascript
+      window.addEventListener('keydown', function(event) {
+        playAudio(event.keyCode)
+      });
+
+      function playAudio(code){
+        const audio = document.querySelector(`audio[data-key="${code}"]`);
+        const key = document.querySelector(`.key[data-key="${code}"]`);
+        if(!audio) return; //stop the function from running all together
+        audio.currentTime = 0 //rewind to the start
+        audio.play();
+        key.classList.add('playing');
+      }
+
+      document.querySelectorAll('.key').forEach( e =>
+        e.addEventListener('click', () =>
+          playAudio(e.dataset.key)
+        )
+      )
+
+      function removeTransition(event) {
+        if(event.propertyName !== 'transform') return; // skip it if it's not a transform
+        this.classList.remove('playing');
+      }
+
+      const keys = document.querySelectorAll('.key');
+      keys.forEach(key => key.addEventListener('transitionend', removeTransition));
