@@ -1,6 +1,6 @@
 html {
   font-size: 10px;
-  background: radial-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.8)), url(https://wallpapercave.com/wp/wp1951946.jpg) bottom center;
+  background: radial-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.8)), url("https://wallpapercave.com/wp/wp1951946.jpg") bottom center;
   background-size: cover;
   background-position: center;
 }
